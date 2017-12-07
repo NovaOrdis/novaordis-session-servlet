@@ -16,6 +16,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <slf4j-version>1.7.12</slf4j-version>
         <servlet-api-version>3.1.0</servlet-api-version>
+        <junit.version>4.12</junit.version>
     </properties>
 
     <build>
@@ -71,6 +72,12 @@
             <artifactId>javax.servlet-api</artifactId>
             <version>${servlet-api-version}</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
