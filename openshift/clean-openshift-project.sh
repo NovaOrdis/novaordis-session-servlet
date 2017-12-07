@@ -8,6 +8,9 @@ function main() {
 
     verify-project-name ${openshift_project_name}
 
+    oc-delete bc/novaordis-session-servlet
+    oc-delete is/novaordis-session-servlet
+
 
 }
 
