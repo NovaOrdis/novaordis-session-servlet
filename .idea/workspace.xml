@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7751b827-f660-4c94-94d3-a34df336923c" name="Default" comment="">
-      <change type="MOVED" beforePath="$PROJECT_DIR$/clean-openshift-project.sh" afterPath="$PROJECT_DIR$/openshift/clean-openshift-project.sh" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="7751b827-f660-4c94-94d3-a34df336923c" name="Default" comment="" />
     <ignored path="OpenShift Development Assignment - NovaOrdis Session Servlet.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -563,16 +560,16 @@
       <created>1512587562871</created>
       <option name="number" value="Default" />
       <updated>1512587562871</updated>
-      <workItem from="1512587564102" duration="4321000" />
+      <workItem from="1512587564102" duration="4383000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="4321000" />
+    <option name="totallyTimeSpent" value="4383000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="2834" y="36" width="2078" height="1241" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
