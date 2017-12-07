@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7751b827-f660-4c94-94d3-a34df336923c" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.s2i/bin/assemble" afterPath="$PROJECT_DIR$/.s2i/bin/assemble" />
-    </list>
+    <list default="true" id="7751b827-f660-4c94-94d3-a34df336923c" name="Default" comment="" />
     <ignored path="OpenShift Development Assignment - NovaOrdis Session Servlet.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -28,8 +26,8 @@
       <file leaf-file-name="assemble" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/.s2i/bin/assemble">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.92028344">
-              <caret line="149" column="17" selection-start-line="149" selection-start-column="17" selection-end-line="149" selection-end-column="17" />
+            <state vertical-scroll-proportion="0.13286094">
+              <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -529,12 +527,12 @@
       <created>1512587562871</created>
       <option name="number" value="Default" />
       <updated>1512587562871</updated>
-      <workItem from="1512587564102" duration="7290000" />
+      <workItem from="1512587564102" duration="7454000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="7290000" />
+    <option name="totallyTimeSpent" value="7454000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="606" y="83" width="1886" height="1253" extended-state="0" />
@@ -640,8 +638,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/.s2i/bin/assemble">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.92028344">
-          <caret line="149" column="17" selection-start-line="149" selection-start-column="17" selection-end-line="149" selection-end-column="17" />
+        <state vertical-scroll-proportion="0.13286094">
+          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
           <folding />
         </state>
       </provider>
