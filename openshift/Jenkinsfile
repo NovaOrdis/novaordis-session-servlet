@@ -1,5 +1,9 @@
-node {
 
-    echo '### synthetic'
+openshift.withCluster() {
+
+    openshift.withProject() {
+        
+        echo "building in project ${openshift.project()}"
+    }
 
 }
