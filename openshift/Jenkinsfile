@@ -1,9 +1,33 @@
+node {
 
-openshift.withCluster() {
+    stage ("Build") {
 
-    openshift.withProject() {
-        
-        echo "building in project ${openshift.project()}"
+        echo 'building ...'
+
+//        openshiftBuild apiURL: 'https://openshift.default.svc.cluster.local', authToken: '', bldCfg: 'hello-nodejs', buildName: '', checkForTriggeredDeployments: 'false', commitID: '', namespace: '', showBuildLogs: 'false', verbose: 'false', waitTime: ''
+//
+//        openshiftVerifyBuild apiURL: 'https://openshift.default.svc.cluster.local', authToken: '', bldCfg: 'hello-nodejs', checkForTriggeredDeployments: 'false', namespace: '', verbose: 'false'
+
+        echo 'build complete'
     }
 
+    stage ("Deploy") {
+
+        echo 'deploying ...'
+
+//        openshiftDeploy apiURL: 'https://openshift.default.svc.cluster.local', authToken: '', depCfg: 'hello-nodejs', namespace: '', verbose: 'false', waitTime: ''
+//
+//        openshiftVerifyDeployment apiURL: 'https://openshift.default.svc.cluster.local', authToken: '', depCfg: 'hello-nodejs', namespace: '', replicaCount: '1', verbose: 'false', verifyReplicaCount: 'false', waitTime: ''
+
+        echo 'deployment complete'
+    }
+
+    stage ("Verify") {
+
+        echo 'verifying ...'
+
+//        openshiftVerifyService apiURL: 'https://openshift.default.svc.cluster.local', authToken: '', namespace: '', svcName: 'hello-nodejs', verbose: 'false'
+
+        echo 'service verification complete'
+    }
 }
