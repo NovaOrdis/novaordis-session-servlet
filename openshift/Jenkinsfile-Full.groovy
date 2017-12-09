@@ -12,7 +12,7 @@ try {
                 echo "initializing ..."
 
                 project = env.PROJECT_NAME
-                mavenCommand = "mvn -s openshift/nexus-settings.xml -Dmaven.wagon.http.ssl.insecure=true -Djavax.net.ssl.trustStore=openshift/nexus.truststore -Djavax.net.ssl.trustStorePassword=nexus123"
+                mavenCommand = "mvn -s openshift/nexus-settings.xml -Djavax.net.ssl.trustStore=openshift/nexus.truststore -Djavax.net.ssl.trustStorePassword=nexus123"
             }
         }
 
@@ -52,6 +52,13 @@ try {
                         }
                 )
             }
+
+            stage ("publish Maven artifact") {
+
+                sh "${mvnCmd} deploy -DskipTests=true"
+
+            }
+
         }
     }
 
