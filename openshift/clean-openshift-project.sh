@@ -8,8 +8,13 @@ function main() {
 
     verify-project-name ${openshift_project_name}
 
-    oc-delete bc/noss
-
+    oc-delete is/builder-image-eap7
+    oc-delete is/noss
+    oc-delete bc/s2i
+    oc-delete bc/pipeline
+    oc-delete dc/noss
+    oc-delete routes/noss
+    oc-delete svc/noss
 
 }
 

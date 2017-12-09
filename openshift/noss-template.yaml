@@ -1,0 +1,252 @@
+#
+#
+# The template that creates all OpenShift objects required by a S2I build and also a Jenkins pipeline that triggers
+# the S2I build and moves artifacts into the proper project.
+#
+apiVersion: v1
+kind: Template
+metadata:
+  name: noss-template
+parameters:
+- name: APPLICATION_NAME
+  value: noss
+  displayName: The application name.
+  description: The name used when creating all the application objects and labels.
+  required: true
+- name: GIT_REPOSITORY_URL
+  value: https://gogs-cicd.apps.openshift.novaordis.io/gogs/novaordis-session-servlet.git
+  displayName: The application Git repository URL.
+  description: |
+    The URL of the application source code repository. The repository must contain a Jenkinsfile in the directory
+    whose path is specified as JENKINSFILE_DIR_PATH
+  required: true
+- name: JENKINSFILE_PATH
+  value: openshift/Jenkinsfile
+  displayName: Jenkinsfile path relative to the repository root.
+  description: Jenkinsfile path relative to the repository root.
+  required: true
+- name: GOGS_WEBHOOK_SECRET
+  value: bMcR07ByncUod4bNC89KY
+  displayName: Gogs webhook secret.
+  description: |
+    The Gogs webhook can be configured externally when recreating the application from template, which is useful if
+    we do not want, or we cannot change the definition of the webhook already declared.
+  required: true
+objects:
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    name: builder-image-eap7
+  spec:
+    lookupPolicy:
+      local: false
+    tags:
+    - name: latest
+      from:
+        kind: DockerImage
+        name: registry.access.redhat.com/jboss-eap-7/eap70-openshift:latest
+      name: latest
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    name: ${APPLICATION_NAME}
+  spec:
+    lookupPolicy:
+      local: false
+    tags:
+    - annotations: null
+      from:
+        kind: DockerImage
+        name: docker-registry.default.svc:5000/noss-dev-pipeline/${APPLICATION_NAME}:latest
+      generation: null
+      importPolicy: {}
+      name: latest
+      referencePolicy:
+        type: ""
+  status:
+#
+# s2i build - won't be triggered automatically, but it will be invoked by the pipeline build
+#
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    name: s2i
+  spec:
+    failedBuildsHistoryLimit: 5
+    output:
+      to:
+        kind: ImageStreamTag
+        name: ${APPLICATION_NAME}:latest
+    runPolicy: Serial
+    source:
+      git:
+        uri: ${GIT_REPOSITORY_URL}
+      type: Git
+    strategy:
+      sourceStrategy:
+        env:
+        - name: GIT_SSL_NO_VERIFY
+          value: "true"
+        from:
+          kind: ImageStreamTag
+          name: builder-image-eap7:latest
+      type: Source
+    successfulBuildsHistoryLimit: 5
+    triggers:
+    - type: ConfigChange
+#
+# the pipeline build
+#
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    name: pipeline
+  spec:
+    source:
+      git:
+        uri: ${GIT_REPOSITORY_URL}
+    strategy:
+      type: JenkinsPipeline
+      jenkinsPipelineStrategy:
+        env:
+          - name: GIT_SSL_NO_VERIFY
+            value: "true"
+        jenkinsfilePath: ${JENKINSFILE_PATH}
+    triggers:
+    - generic:
+        secret: ${GOGS_WEBHOOK_SECRET}
+      type: Generic
+#
+# development deployment - this is where developers check the head
+#
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    labels:
+      app: ${APPLICATION_NAME}
+      application: ${APPLICATION_NAME}
+    name: ${APPLICATION_NAME}
+  spec:
+    replicas: 1
+    selector:
+      deploymentConfig: ${APPLICATION_NAME}
+    strategy:
+      activeDeadlineSeconds: 21600
+      recreateParams:
+        timeoutSeconds: 600
+      resources: {}
+      type: Recreate
+    template:
+      metadata:
+        labels:
+          app: ${APPLICATION_NAME}
+          application: ${APPLICATION_NAME}
+          deploymentConfig: ${APPLICATION_NAME}
+        name: ${APPLICATION_NAME}
+      spec:
+        containers:
+        - env:
+          - name: OPENSHIFT_KUBE_PING_LABELS
+            value: application=${APPLICATION_NAME}
+          - name: OPENSHIFT_KUBE_PING_NAMESPACE
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+          - name: AUTO_DEPLOY_EXPLODED
+            value: "false"
+          image: ' '
+          imagePullPolicy: Always
+          lifecycle:
+            preStop:
+              exec:
+                command:
+                - /opt/eap/bin/jboss-cli.sh
+                - -c
+                - :shutdown(timeout=60)
+          livenessProbe:
+            exec:
+              command:
+              - /bin/bash
+              - -c
+              - /opt/eap/bin/livenessProbe.sh
+            failureThreshold: 3
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: ${APPLICATION_NAME}
+          ports:
+          - containerPort: 8778
+            name: jolokia
+            protocol: TCP
+          - containerPort: 8080
+            name: http
+            protocol: TCP
+          - containerPort: 8888
+            name: ping
+            protocol: TCP
+          readinessProbe:
+            exec:
+              command:
+              - /bin/bash
+              - -c
+              - /opt/eap/bin/readinessProbe.sh
+            failureThreshold: 3
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        terminationGracePeriodSeconds: 75
+    test: false
+    triggers:
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - ${APPLICATION_NAME}
+        from:
+          kind: ImageStreamTag
+          name: ${APPLICATION_NAME}:latest
+      type: ImageChange
+    - type: ConfigChange
+  status:
+- apiVersion: v1
+  kind: Route
+  metadata:
+    labels:
+      app: ${APPLICATION_NAME}
+      application: ${APPLICATION_NAME}
+      template: novaordis-service-template
+    name: ${APPLICATION_NAME}
+  spec:
+    host: ${APPLICATION_NAME}-dev.apps.openshift.novaordis.io
+    port:
+      targetPort: 8080
+    tls:
+      termination: edge
+    to:
+      kind: Service
+      name: ${APPLICATION_NAME}
+      weight: 100
+    wildcardPolicy: None
+  status:
+- apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      app: ${APPLICATION_NAME}
+      application: ${APPLICATION_NAME}
+    name: ${APPLICATION_NAME}
+  spec:
+    ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      deploymentConfig: ${APPLICATION_NAME}
+    sessionAffinity: None
+    type: ClusterIP
+  status:

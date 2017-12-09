@@ -4,8 +4,8 @@ node {
 
         echo 'building ...'
 
-//        openshiftBuild apiURL: 'https://openshift.default.svc.cluster.local', authToken: '', bldCfg: 'hello-nodejs', buildName: '', checkForTriggeredDeployments: 'false', commitID: '', namespace: '', showBuildLogs: 'false', verbose: 'false', waitTime: ''
-//
+        //openshiftBuild apiURL: 'https://openshift.default.svc.cluster.local', authToken: '', bldCfg: 'hello-nodejs', buildName: '', checkForTriggeredDeployments: 'false', commitID: '', namespace: '', showBuildLogs: 'false', verbose: 'false', waitTime: ''
+
 //        openshiftVerifyBuild apiURL: 'https://openshift.default.svc.cluster.local', authToken: '', bldCfg: 'hello-nodejs', checkForTriggeredDeployments: 'false', namespace: '', verbose: 'false'
 
         echo 'build complete'
