@@ -79,16 +79,7 @@ try {
                 //echo 'matcher: ${matcher}'
                 def version = "1.0.0";
 
-                //
-                // tag for test
-                //
-
                 sh "oc tag noss-dev-pipeline/noss-dev:latest noss-test/noss-test:${version}"
-
-                //
-                // clean up. keep the imagestream
-                //
-
                 sh "oc delete bc,dc,svc,route -l app=noss -n noss-test"
                 sh "oc new-app noss-test:${version} -n noss-test"
                 sh "oc expose svc/noss-test -n noss-test"
@@ -98,10 +89,18 @@ try {
 
                 echo "deploying in prod ..."
 
+                def version = "1.0.0";
+
                 timeout(time: 5, unit: 'MINUTES') {
 
                     input message: "Promote to PROD?", ok: "Promote"
                 }
+
+                sh "oc tag noss-dev-pipeline/noss-dev:latest noss-prod/noss-prod:${version}"
+                sh "oc delete bc,dc,svc,route -l app=noss -n noss-prod"
+                sh "oc new-app noss-prod:${version} -n noss-prod"
+                sh "oc expose svc/noss-prod -n noss-prod"
+
             }
         }
 
