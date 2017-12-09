@@ -56,18 +56,24 @@ try {
             stage ("publish to Nexus") {
 
                 // sh "${mavenCommand} deploy -DskipTests=true"
+            }
 
+            stage("deploy dev") {
+
+                echo "deploying in dev ..."
+
+                unstash name: "build-artifacts", includes: "target/session-servlet.war"
             }
         }
 
 
         node {
 
-            stage("deploy dev") {
-
-                echo "deploying in dev ..."
-
-                unstash name:"build-artifacts", includes:"target/session-servlet.war"
+//            stage("deploy dev") {
+//
+//                echo "deploying in dev ..."
+//
+//                unstash name:"build-artifacts", includes:"target/session-servlet.war"
 
 //                sh "rm -rf oc-build && mkdir -p oc-build/deployments"
 //
@@ -110,7 +116,7 @@ try {
             }
 
         }
-    }
+    
 
 //        node {
 //
