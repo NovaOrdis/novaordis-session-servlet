@@ -39,6 +39,7 @@ try {
             stage("tests") {
 
                 parallel(
+
                         "unit tests": {
 
                             sh "mvn clean test"
