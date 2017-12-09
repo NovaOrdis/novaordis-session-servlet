@@ -11,6 +11,8 @@ try {
                 echo "initializing ..."
 
                 project = env.PROJECT_NAME
+
+                echo "MAVEN_MIRROR_URL: ${MAVEN_MIRROR_URL}"
             }
         }
 
