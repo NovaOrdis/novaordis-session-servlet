@@ -126,32 +126,29 @@ objects:
             value: "${GIT_REPOSITORY_URL}"
         jenkinsfilePath: openshift/Jenkinsfile-Full.groovy
 #
-# development deployment - this is where developers check the head
+# DEV deployment - this is where developers check the head
 #
 - apiVersion: v1
   kind: DeploymentConfig
   metadata:
     labels:
-      app: ${APPLICATION_NAME}
-      application: ${APPLICATION_NAME}
-    name: ${APPLICATION_NAME}
+      app: ${APPLICATION_NAME}-dev
+    name: ${APPLICATION_NAME}-dev
   spec:
     replicas: 1
     selector:
-      deploymentConfig: ${APPLICATION_NAME}
+      deploymentConfig: ${APPLICATION_NAME}-dev
     strategy:
       activeDeadlineSeconds: 21600
       recreateParams:
         timeoutSeconds: 600
-      resources: {}
       type: Recreate
     template:
       metadata:
         labels:
-          app: ${APPLICATION_NAME}
-          application: ${APPLICATION_NAME}
-          deploymentConfig: ${APPLICATION_NAME}
-        name: ${APPLICATION_NAME}
+          app: ${APPLICATION_NAME}-dev
+          deploymentConfig: ${APPLICATION_NAME}-dev
+        name: ${APPLICATION_NAME}-dev
       spec:
         containers:
         - env:
@@ -226,10 +223,8 @@ objects:
   kind: Route
   metadata:
     labels:
-      app: ${APPLICATION_NAME}
-      application: ${APPLICATION_NAME}
-      template: novaordis-service-template
-    name: ${APPLICATION_NAME}
+      app: ${APPLICATION_NAME}-dev
+    name: ${APPLICATION_NAME}-dev
   spec:
     host: ${APPLICATION_NAME}-dev.apps.openshift.novaordis.io
     port:
@@ -246,9 +241,8 @@ objects:
   kind: Service
   metadata:
     labels:
-      app: ${APPLICATION_NAME}
-      application: ${APPLICATION_NAME}
-    name: ${APPLICATION_NAME}
+      app: ${APPLICATION_NAME}-dev
+    name: ${APPLICATION_NAME}-dev
   spec:
     ports:
     - port: 8080
