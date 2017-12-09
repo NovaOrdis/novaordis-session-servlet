@@ -53,7 +53,7 @@ try {
                 )
             }
 
-            stage ("publish Maven artifact") {
+            stage ("publish to Nexus") {
 
                 sh "${mvnCmd} deploy -DskipTests=true"
 
