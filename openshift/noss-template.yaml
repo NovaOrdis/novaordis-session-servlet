@@ -124,8 +124,6 @@ objects:
             value: "true"
           - name: GIT_REPOSITORY_URL
             value: "${GIT_REPOSITORY_URL}"
-          - name: MAVEN_MIRROR_URL
-            value: https://nexus-cicd.apps.openshift.novaordis.io/content/groups/public/
         jenkinsfilePath: openshift/Jenkinsfile-Full.groovy
 #
 # development deployment - this is where developers check the head

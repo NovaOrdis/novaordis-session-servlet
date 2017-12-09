@@ -3,6 +3,7 @@ try {
     timeout(time: 20, unit: 'MINUTES') {
 
         def project=""
+        def mavenCommand=""
 
         node {
 
@@ -11,8 +12,7 @@ try {
                 echo "initializing ..."
 
                 project = env.PROJECT_NAME
-
-                echo "MAVEN_MIRROR_URL: ${MAVEN_MIRROR_URL}"
+                mavenCommand = "mvn -s openshift/nexus-settings.xml"
             }
         }
 
@@ -31,7 +31,7 @@ try {
 
                 echo "building maven artifacts without tests ..."
 
-                sh "mvn clean package -Dmaven.test.skip=true"
+                sh "${mavenCommand} clean package -Dmaven.test.skip=true"
 
                 echo "build ok"
 
@@ -44,11 +44,11 @@ try {
 
                         "unit tests": {
 
-                            sh "mvn clean test"
+                            sh "${mavenCommand} clean test"
                         },
                         "coverage tests": {
 
-                            sh "mvn clean test"
+                            sh "${mavenCommand} clean test"
                         }
                 )
             }
