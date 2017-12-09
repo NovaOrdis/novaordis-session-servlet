@@ -79,6 +79,11 @@ try {
                 //echo 'matcher: ${matcher}'
                 def version = "1.0.0";
 
+                //
+                // normally we shouldn't do this if we use a different version
+                //
+                sh "oc is -l app=noss -n noss-test || true"
+
                 sh "oc tag noss-dev-pipeline/noss-dev:latest noss-test/noss-test:${version}"
                 sh "oc delete bc,dc,svc,route -l app=noss -n noss-test"
                 sh "oc new-app noss-test:${version} -n noss-test"
@@ -95,6 +100,11 @@ try {
 
                     input message: "Promote to PROD?", ok: "Promote"
                 }
+
+                //
+                // normally we shouldn't do this if we use a different version
+                //
+                sh "oc is -l app=noss -n noss-prod || true"
 
                 sh "oc tag noss-dev-pipeline/noss-dev:latest noss-prod/noss-prod:${version}"
                 sh "oc delete bc,dc,svc,route -l app=noss -n noss-prod"
