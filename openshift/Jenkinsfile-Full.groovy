@@ -75,7 +75,9 @@ try {
 
             stage("deploy test") {
 
-                def v = version()
+                def matcher = readFile('pom.xml') =~ '<version>(.+)</version>'
+                echo 'matcher: ${matcher}'
+                def version = "1.0.0";
 
                 //
                 // tag for test
@@ -88,7 +90,7 @@ try {
                 //
 
                 sh "oc delete bc,dc,svc,route -l app=noss -n noss-test"
-                sh "oc new-app noss-test:${v} -n noss-test"
+                sh "oc new-app noss-test:${version} -n noss-test"
                 sh "oc expose svc/noss-test -n noss-test"
             }
 
