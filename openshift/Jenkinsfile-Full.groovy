@@ -42,13 +42,27 @@ try {
 
                     stage("unit tests") {
 
-                        sh "mvn clean test"
+                        agent {
 
+                            label "unit-tests"
+                        }
+                        steps {
+
+                            sh "mvn clean test"
+                        }
                     }
 
                     stage("coverage tests") {
 
-                        sh "mvn clean test"
+                        agent {
+
+                            label "sonar tests"
+
+                        }
+                        steps {
+
+                            sh "mvn clean test"
+                        }
                     }
                 }
 
