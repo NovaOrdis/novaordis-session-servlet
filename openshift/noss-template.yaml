@@ -92,8 +92,6 @@ objects:
           name: builder-image-eap7:latest
       type: Source
     successfulBuildsHistoryLimit: 5
-    triggers:
-    - type: ConfigChange
 #
 # the pipeline build
 #

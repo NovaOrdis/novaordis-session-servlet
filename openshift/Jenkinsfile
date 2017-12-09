@@ -2,13 +2,13 @@ node {
 
     stage ("Build") {
 
-        echo 'building ...'
+        echo 'starting an s2i build ...'
 
-        //openshiftBuild apiURL: 'https://openshift.default.svc.cluster.local', authToken: '', bldCfg: 'hello-nodejs', buildName: '', checkForTriggeredDeployments: 'false', commitID: '', namespace: '', showBuildLogs: 'false', verbose: 'false', waitTime: ''
+        openshiftBuild apiURL: 'https://openshift.default.svc.cluster.local', authToken: '', bldCfg: 's2i', buildName: '', checkForTriggeredDeployments: 'false', commitID: '', namespace: '', showBuildLogs: 'true', verbose: 'true', waitTime: ''
 
 //        openshiftVerifyBuild apiURL: 'https://openshift.default.svc.cluster.local', authToken: '', bldCfg: 'hello-nodejs', checkForTriggeredDeployments: 'false', namespace: '', verbose: 'false'
 
-        echo 'build complete'
+        echo 's2i build complete'
     }
 
     stage ("Deploy") {
