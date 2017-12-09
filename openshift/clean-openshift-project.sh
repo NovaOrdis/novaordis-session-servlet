@@ -11,7 +11,7 @@ function main() {
     oc-delete is/builder-image-eap7
     oc-delete is/noss
     oc-delete bc/s2i
-    oc-delete bc/pipeline
+    oc-delete bc/pipeline-s2i
     oc-delete dc/noss
     oc-delete routes/noss
     oc-delete svc/noss

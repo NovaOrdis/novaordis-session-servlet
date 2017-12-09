@@ -93,12 +93,12 @@ objects:
       type: Source
     successfulBuildsHistoryLimit: 5
 #
-# the pipeline build
+# a simple pipeline that triggers an S2I build
 #
 - apiVersion: v1
   kind: BuildConfig
   metadata:
-    name: pipeline
+    name: pipeline-s2i
   spec:
     source:
       git:
@@ -109,11 +109,7 @@ objects:
         env:
           - name: GIT_SSL_NO_VERIFY
             value: "true"
-        jenkinsfilePath: ${JENKINSFILE_PATH}
-    triggers:
-    - generic:
-        secret: ${GOGS_WEBHOOK_SECRET}
-      type: Generic
+        jenkinsfilePath: openshift/Jenkinsfile-Simple-S2I
 #
 # development deployment - this is where developers check the head
 #
