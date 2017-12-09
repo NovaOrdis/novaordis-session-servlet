@@ -62,6 +62,8 @@ try {
 
                 echo "deploying in dev ..."
 
+                unstash name:"build-artifacts"
+
                 sh "rm -rf oc-build && mkdir -p oc-build/deployments"
                 sh "cp target/session-servlet.war oc-build/deployments"
                 sh "oc delete bc,dc,svc,route -l app=noss-dev"
