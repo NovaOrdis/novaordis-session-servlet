@@ -20,11 +20,6 @@ parameters:
     The URL of the application source code repository. The repository must contain a Jenkinsfile in the directory
     whose path is specified as JENKINSFILE_DIR_PATH
   required: true
-- name: JENKINSFILE_PATH
-  value: openshift/Jenkinsfile
-  displayName: Jenkinsfile path relative to the repository root.
-  description: Jenkinsfile path relative to the repository root.
-  required: true
 - name: GOGS_WEBHOOK_SECRET
   value: bMcR07ByncUod4bNC89KY
   displayName: Gogs webhook secret.
@@ -109,7 +104,7 @@ objects:
         env:
           - name: GIT_SSL_NO_VERIFY
             value: "true"
-        jenkinsfilePath: openshift/Jenkinsfile-Simple-S2I
+        jenkinsfilePath: openshift/Jenkinsfile-Simple-S2I.groovy
 #
 # the full pipeline
 #
@@ -127,7 +122,7 @@ objects:
         env:
           - name: GIT_SSL_NO_VERIFY
             value: "true"
-        jenkinsfilePath: openshift/Jenkinsfile-Full
+        jenkinsfilePath: openshift/Jenkinsfile-Full.groovy
 #
 # development deployment - this is where developers check the head
 #

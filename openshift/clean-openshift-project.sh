@@ -17,6 +17,11 @@ function main() {
     oc-delete routes/noss
     oc-delete svc/noss
 
+    oc-delete dc/jenkins
+    oc-delete routes/jenkins
+    oc-delete svc/jenkins
+    oc-delete svc/jenkins-jnlp
+
 }
 
 main $@
