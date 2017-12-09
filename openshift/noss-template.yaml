@@ -122,6 +122,8 @@ objects:
         env:
           - name: GIT_SSL_NO_VERIFY
             value: "true"
+            name: GIT_REPOSITORY_URL
+            value: "${GIT_REPOSITORY_URL}"
         jenkinsfilePath: openshift/Jenkinsfile-Full.groovy
 #
 # development deployment - this is where developers check the head

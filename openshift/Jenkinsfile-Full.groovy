@@ -18,9 +18,9 @@ try {
 
             stage("checkout") {
 
-                echo "checking out from ${GIT_SOURCE_URL} ..."
+                echo "checking out from ${GIT_REPOSITORY_URL} ..."
 
-                git url: "${GIT_SOURCE_URL}", branch: "${GIT_SOURCE_REF}"
+                git url: "${GIT_REPOSITORY_URL}", branch: "master"
 
                 echo "check out ok"
             }
