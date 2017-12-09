@@ -111,6 +111,24 @@ objects:
             value: "true"
         jenkinsfilePath: openshift/Jenkinsfile-Simple-S2I
 #
+# the full pipeline
+#
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    name: pipeline-full
+  spec:
+    source:
+      git:
+        uri: ${GIT_REPOSITORY_URL}
+    strategy:
+      type: JenkinsPipeline
+      jenkinsPipelineStrategy:
+        env:
+          - name: GIT_SSL_NO_VERIFY
+            value: "true"
+        jenkinsfilePath: openshift/Jenkinsfile-Full
+#
 # development deployment - this is where developers check the head
 #
 - apiVersion: v1

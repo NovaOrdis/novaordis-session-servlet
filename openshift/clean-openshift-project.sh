@@ -12,6 +12,7 @@ function main() {
     oc-delete is/noss
     oc-delete bc/s2i
     oc-delete bc/pipeline-s2i
+    oc-delete bc/pipeline-full
     oc-delete dc/noss
     oc-delete routes/noss
     oc-delete svc/noss
