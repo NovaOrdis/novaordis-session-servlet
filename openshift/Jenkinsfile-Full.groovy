@@ -38,26 +38,25 @@ try {
 
             stage("tests") {
 
-                steps {
+                parallel {
 
-                    parallel (
-                            "unit tests": {
+                    stage("unit tests") {
 
+                        steps {
 
-                                sh "mvn clean test"
+                            sh "mvn clean test"
+                        }
+                    }
+                    stage("coverage tests") {
 
-                            },
-                            "coverage tests" : {
+                        steps {
 
-
-                                sh "mvn clean test"
-
-                            }
-                    )
+                            sh "mvn clean test"
+                        }
+                    }
                 }
             }
         }
-
     }
 
 //        node {
@@ -78,7 +77,7 @@ try {
 //                openshiftDeploy deploymentConfig: appName, namespace: project
 //            }
 //        }
-}
+
 }
 catch (err) {
 
