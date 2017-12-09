@@ -56,7 +56,7 @@ try {
 
                         agent {
 
-                            label "sonar tests"
+                            label "sonar-tests"
 
                         }
                         steps {
@@ -65,8 +65,6 @@ try {
                         }
                     }
                 }
-
-                echo "tests ok"
             }
 
         }
