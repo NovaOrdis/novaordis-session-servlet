@@ -33,7 +33,7 @@ try {
 
                 echo "build ok"
 
-                stash name:"war", includes:"target/ROOT.war"
+                stash name:"war", includes:"target/novaordis-session-servlet.war"
             }
 
             stage("tests") {
