@@ -83,7 +83,7 @@ try {
                 // tag for test
                 //
 
-                sh "oc tag noss-dev/noss:latest noss-test/noss-test:${v}"
+                sh "oc tag noss-dev/noss:latest noss-test/noss-test:${version}"
 
                 //
                 // clean up. keep the imagestream
