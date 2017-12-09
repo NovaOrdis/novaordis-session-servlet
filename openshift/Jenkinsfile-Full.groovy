@@ -62,7 +62,13 @@ try {
 
                 echo "deploying in dev ..."
 
-                unstash name: "build-artifacts", includes: "target/session-servlet.war"
+                sh "rm -rf oc-build && mkdir -p oc-build/deployments"
+                sh "cp target/session-servlet.war oc-build/deployments"
+                sh "oc delete bc,dc,svc,route -l app=noss-dev"
+                sh "oc new-build --name=binary -labels=app=noss-dev --image-stream=jboss-eap70-openshift:1.5 --binary=true"
+                sh "oc start-build binary --from-dir=oc-build --wait=true"
+                sh "oc new-app noss-dev:latest"
+                sh "oc expose svc/noss-dev"
             }
         }
 
@@ -75,34 +81,6 @@ try {
 //
 //                unstash name:"build-artifacts", includes:"target/session-servlet.war"
 
-//                sh "rm -rf oc-build && mkdir -p oc-build/deployments"
-//
-//                sh "cp target/openshift-tasks.war oc-build/deployments/ROOT.war"
-//
-//                //
-//                // clean up. keep the image stream
-//                //
-//
-//                sh "oc delete bc,dc,svc,route -l app=tasks -n ${DEV_PROJECT}"
-//
-//                //
-//                // create build. override the exit code since it complains about exising imagestream
-//                //
-//
-//                sh "oc new-build --name=tasks --image-stream=jboss-eap70-openshift:1.5 --binary=true --labels=app=tasks -n ${DEV_PROJECT} || true"
-//
-//                //
-//                // build image
-//                //
-//
-//                sh "oc start-build tasks --from-dir=oc-build --wait=true -n ${DEV_PROJECT}"
-//
-//                //
-//                // deploy image
-//                //
-//                sh "oc new-app tasks:latest -n ${DEV_PROJECT}"
-//
-//                sh "oc expose svc/tasks -n ${DEV_PROJECT}"
             }
 
             stage("deploy test") {
@@ -116,7 +94,7 @@ try {
             }
 
         }
-    
+
 
 //        node {
 //
