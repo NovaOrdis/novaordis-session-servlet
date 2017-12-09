@@ -3,7 +3,7 @@ try {
     timeout(time: 20, unit: 'MINUTES') {
 
         def project=""
-        def mavenCommand=""
+        def mavenCommand="mvn"
 
         node {
 
@@ -12,7 +12,7 @@ try {
                 echo "initializing ..."
 
                 project = env.PROJECT_NAME
-                mavenCommand = "mvn -s openshift/nexus-settings.xml -Dmaven.wagon.http.ssl.insecure=true"
+                //mavenCommand = "mvn -s openshift/nexus-settings.xml -Dmaven.wagon.http.ssl.insecure=true"
             }
         }
 
@@ -48,7 +48,7 @@ try {
                         },
                         "coverage tests": {
 
-                            sh "${mavenCommand} clean test"
+                            sh "${mavenCommand} sonar:sonar -Dsonar.host.url=http://sonarqube:9000 -DskipTests=true"
                         }
                 )
             }
