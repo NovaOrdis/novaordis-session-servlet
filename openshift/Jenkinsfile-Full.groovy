@@ -42,23 +42,13 @@ try {
 
                     stage("unit tests") {
 
-                        agent {
-
-                            label "unit-tests"
-                        }
                         steps {
 
                             sh "mvn clean test"
                         }
                     }
-
                     stage("coverage tests") {
 
-                        agent {
-
-                            label "sonar-tests"
-
-                        }
                         steps {
 
                             sh "mvn clean test"
