@@ -66,7 +66,7 @@ try {
 
                 sh "rm -rf oc-build && mkdir -p oc-build/deployments"
                 sh "cp target/session-servlet.war oc-build/deployments"
-                sh "oc delete bc,dc,svc,route -l app=noss-dev"
+                sh "oc delete bc,dc,svc,route,is -l app=noss-dev"
                 sh "oc new-build --name=noss-dev --labels=app=noss-dev --image-stream=jboss-eap70-openshift:1.5 --binary=true"
                 sh "oc start-build noss-dev --from-dir=oc-build --wait=true"
                 sh "oc new-app noss-dev:latest"
