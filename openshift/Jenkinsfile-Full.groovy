@@ -12,7 +12,7 @@ try {
                 echo "initializing ..."
 
                 project = env.PROJECT_NAME
-                //mavenCommand = "mvn -s openshift/nexus-settings.xml -Dmaven.wagon.http.ssl.insecure=true"
+                mavenCommand = "mvn -s openshift/nexus-settings.xml -Dmaven.wagon.http.ssl.insecure=true -Djavax.net.ssl.trustStore=openshift/nexus.truststore -Djavax.net.ssl.trustStorePassword=nexus123"
             }
         }
 
