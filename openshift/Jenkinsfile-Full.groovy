@@ -38,23 +38,16 @@ try {
 
             stage("tests") {
 
-                parallel {
+                parallel(
+                        "unit tests": {
 
-                    stage("unit tests") {
-
-                        steps {
+                            sh "mvn clean test"
+                        },
+                        "coverage tests": {
 
                             sh "mvn clean test"
                         }
-                    }
-                    stage("coverage tests") {
-
-                        steps {
-
-                            sh "mvn clean test"
-                        }
-                    }
-                }
+                )
             }
         }
     }
