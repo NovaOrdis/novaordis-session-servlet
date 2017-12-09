@@ -75,8 +75,8 @@ try {
 
             stage("deploy test") {
 
-                def matcher = readFile('pom.xml') =~ '<version>(.+)</version>'
-                echo 'matcher: ${matcher}'
+                //def matcher = readFile('pom.xml') =~ '<version>(.+)</version>'
+                //echo 'matcher: ${matcher}'
                 def version = "1.0.0";
 
                 //
