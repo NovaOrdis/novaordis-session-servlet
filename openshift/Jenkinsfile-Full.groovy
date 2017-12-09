@@ -2,8 +2,8 @@ try {
 
     timeout(time: 20, unit: 'MINUTES') {
 
-        def project=""
-        def mavenCommand="mvn"
+        def project = ""
+        def mavenCommand = "mvn"
 
         node {
 
@@ -35,7 +35,7 @@ try {
 
                 echo "build ok"
 
-                stash name:"build-artifacts", includes:"target/session-servlet.war"
+                stash name: "build-artifacts", includes: "target/session-servlet.war"
             }
 
             stage("tests") {
@@ -53,7 +53,7 @@ try {
                 )
             }
 
-            stage ("publish to Nexus") {
+            stage("publish to Nexus") {
 
                 // sh "${mavenCommand} deploy -DskipTests=true"
             }
@@ -62,7 +62,7 @@ try {
 
                 echo "deploying in dev ..."
 
-                unstash name:"build-artifacts"
+                unstash name: "build-artifacts"
 
                 sh "rm -rf oc-build && mkdir -p oc-build/deployments"
                 sh "cp target/session-servlet.war oc-build/deployments"
@@ -70,53 +70,40 @@ try {
                 sh "oc new-build --name=noss-dev --labels=app=noss-dev --image-stream=jboss-eap70-openshift:1.5 --binary=true"
                 sh "oc start-build noss-dev --from-dir=oc-build --wait=true"
                 sh "oc new-app noss-dev:latest"
-                sh "oc expose svc/noss-dev"
-            }
-        }
-
-
-        node {
-
-//            stage("deploy dev") {
-//
-//                echo "deploying in dev ..."
-//
-//                unstash name:"build-artifacts", includes:"target/session-servlet.war"
-
+                sh "oc create -f ./openshift/route.yaml"
             }
 
             stage("deploy test") {
 
-                echo "deploying in test ..."
+                def v = version()
+
+                //
+                // tag for test
+                //
+
+                sh "oc tag noss-dev/noss:latest noss-test/noss-test:${v}"
+
+                //
+                // clean up. keep the imagestream
+                //
+
+                sh "oc delete bc,dc,svc,route -l app=noss -n noss-test"
+                sh "oc new-app noss-test:${v} -n noss-test"
+                sh "oc expose svc/noss-test -n noss-test"
             }
 
             stage("deploy prod") {
 
                 echo "deploying in prod ..."
-            }
 
+                timeout(time: 5, unit: 'MINUTES') {
+
+                    input message: "Promote to PROD?", ok: "Promote"
+                }
+            }
         }
 
-
-//        node {
-//
-//            stage("build image") {
-//
-//                echo "building image ..."
-//
-//                unstash name:"war"
-//
-//                sh "oc start-build ${appName}-docker --from-file=target/ROOT.war -n ${project}"
-//
-//                openshiftVerifyBuild bldCfg: "${appName}-docker", namespace: project, waitTime: '20', waitUnit: 'min'
-//            }
-//
-//            stage("Deploy") {
-//
-//                openshiftDeploy deploymentConfig: appName, namespace: project
-//            }
-//        }
-
+    }
 }
 catch (err) {
 
