@@ -88,7 +88,7 @@ try {
                 //
                 // normally we shouldn't do this if we use a different version
                 //
-                sh "oc is -l app=noss -n noss-test || true"
+                sh "oc delete is -l app=noss -n noss-test || true"
 
                 sh "oc tag noss-dev-pipeline/noss-dev:latest noss-test/noss-test:${version}"
                 sh "oc delete bc,dc,svc,route -l app=noss -n noss-test"
@@ -110,7 +110,7 @@ try {
                 //
                 // normally we shouldn't do this if we use a different version
                 //
-                sh "oc is -l app=noss -n noss-prod || true"
+                sh "oc delete is -l app=noss -n noss-prod || true"
 
                 sh "oc tag noss-dev-pipeline/noss-dev:latest noss-prod/noss-prod:${version}"
                 sh "oc delete bc,dc,svc,route -l app=noss -n noss-prod"
