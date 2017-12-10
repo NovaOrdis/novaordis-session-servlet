@@ -10,10 +10,14 @@ function main() {
 
     oc-delete is/builder-image-eap7
     oc-delete is/noss
+    oc delete is/noss-dev
 
     oc-delete bc/s2i
     oc-delete bc/pipeline-s2i
     oc-delete bc/pipeline-full
+    oc-delete bc/noss-dev
+
+
 
     oc delete dc, route, svc -l app=noss-dev
 
@@ -21,6 +25,9 @@ function main() {
     oc-delete routes/jenkins
     oc-delete svc/jenkins
     oc-delete svc/jenkins-jnlp
+
+    oc delete all --all -n noss-test
+    oc delete all --all -n noss-prod
 
 }
 
