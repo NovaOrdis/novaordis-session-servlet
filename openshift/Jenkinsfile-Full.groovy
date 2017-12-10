@@ -76,7 +76,9 @@ try {
                 sh "oc new-build --name=noss-dev --labels=app=noss-dev --image-stream=jboss-eap70-openshift:1.5 --binary=true"
                 sh "oc start-build noss-dev --from-dir=oc-build --wait=true"
                 sh "oc new-app noss-dev:latest"
-                sh "oc process -p APP_NAME=noss-dev PUBLIC_NAME=noss-dev -f ./openshift/route-template.yaml | oc create -f -"
+                sh "oc process -p APP_NAME=noss-dev PUBLIC_NAME=noss-dev > ./route.yaml"
+                sh "oc create -f ./route.yaml"
+                sh "rm ./route.yaml"
             }
 
             stage("deploy test") {
@@ -93,7 +95,9 @@ try {
                 sh "oc tag noss-dev-pipeline/noss-dev:latest noss-test/noss-test:${version}"
                 sh "oc delete bc,dc,svc,route -l app=noss-test -n noss-test"
                 sh "oc new-app noss-test:${version} -n noss-test"
-                sh "oc process -p APP_NAME=noss-test PUBLIC_NAME=noss-test -f ./openshift/route-template.yaml | oc create -f -"
+                sh "oc process -p APP_NAME=noss-test PUBLIC_NAME=noss-test -f ./openshift/route-template.yaml > ./route.yaml"
+                sh "oc create -f ./route.yaml"
+                sh "rm ./route.yaml"
             }
 
             stage("deploy prod") {
@@ -115,7 +119,10 @@ try {
                 sh "oc tag noss-dev-pipeline/noss-dev:latest noss-prod/noss-prod:${version}"
                 sh "oc delete bc,dc,svc,route -l app=noss-prod -n noss-prod"
                 sh "oc new-app noss-prod:${version} -n noss-prod"
-                sh "oc process -p APP_NAME=noss-prod PUBLIC_NAME=noss -f ./openshift/route-template.yaml | oc create -f -"
+                sh "oc process -p APP_NAME=noss-prod PUBLIC_NAME=noss -f ./openshift/route-template.yaml > ./route.yaml"
+                sh "oc create -f ./route.yaml"
+                sh "rm ./route.yaml"
+
             }
         }
 
