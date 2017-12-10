@@ -91,7 +91,7 @@ try {
                 sh "oc delete is -l app=noss -n noss-test || true"
 
                 sh "oc tag noss-dev-pipeline/noss-dev:latest noss-test/noss-test:${version}"
-                sh "oc delete bc,dc,svc,route -l app=noss -n noss-test"
+                sh "oc delete bc,dc,svc,route -l app=noss-test -n noss-test"
                 sh "oc new-app noss-test:${version} -n noss-test"
                 sh "oc expose svc/noss-test -n noss-test"
             }
@@ -113,7 +113,7 @@ try {
                 sh "oc delete is -l app=noss -n noss-prod || true"
 
                 sh "oc tag noss-dev-pipeline/noss-dev:latest noss-prod/noss-prod:${version}"
-                sh "oc delete bc,dc,svc,route -l app=noss -n noss-prod"
+                sh "oc delete bc,dc,svc,route -l app=noss-prod -n noss-prod"
                 sh "oc new-app noss-prod:${version} -n noss-prod"
                 sh "oc expose svc/noss-prod -n noss-prod"
 
