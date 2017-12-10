@@ -76,7 +76,7 @@ try {
                 sh "oc new-build --name=noss-dev --labels=app=noss-dev --image-stream=jboss-eap70-openshift:1.5 --binary=true"
                 sh "oc start-build noss-dev --from-dir=oc-build --wait=true"
                 sh "oc new-app noss-dev:latest"
-                sh "oc process -p APP_NAME=noss-dev PUBLIC_NAME=noss-dev > ./route.yaml"
+                sh "oc process -p APP_NAME=noss-dev PUBLIC_NAME=noss-dev -f ./openshift/route-template.yaml > ./route.yaml"
                 sh "oc create -f ./route.yaml"
                 sh "rm ./route.yaml"
             }
