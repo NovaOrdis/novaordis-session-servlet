@@ -96,7 +96,7 @@ try {
                 sh "oc delete bc,dc,svc,route -l app=noss-test -n noss-test"
                 sh "oc new-app noss-test:${version} -n noss-test"
                 sh "oc process -p APP_NAME=noss-test PUBLIC_NAME=noss-test -f ./openshift/route-template.yaml > ./route.yaml"
-                sh "oc create -f ./route.yaml"
+                sh "oc create -f ./route.yaml -n noss-test"
                 sh "rm ./route.yaml"
             }
 
@@ -120,7 +120,7 @@ try {
                 sh "oc delete bc,dc,svc,route -l app=noss-prod -n noss-prod"
                 sh "oc new-app noss-prod:${version} -n noss-prod"
                 sh "oc process -p APP_NAME=noss-prod PUBLIC_NAME=noss -f ./openshift/route-template.yaml > ./route.yaml"
-                sh "oc create -f ./route.yaml"
+                sh "oc create -f ./route.yaml -n noss-prod"
                 sh "rm ./route.yaml"
 
             }
